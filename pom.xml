@@ -7,7 +7,17 @@
     <version>0.0.7-SNAPSHOT</version>
 
     <properties>
-        <target.java.version>21</target.java.version>
+        
+        <!-- version for non-MR, pre-9 part. usually you'll want to leave it at 8 -->
+        <mrjar.oldestVersion>8</mrjar.oldestVersion>
+        
+        <!-- newest supported version. you probably want to set it to latest LTS
+        approved by your organization -->
+        <mrjar.newestVersion>21</mrjar.newestVersion>
+        
+        <mrjar.newestVersionPreview>true</mrjar.newestVersionPreview>
+        
+        <target.java.version>${mrjar.newestVersion}</target.java.version>
         <maven.compiler.source>${target.java.version}</maven.compiler.source>
         <maven.compiler.target>${target.java.version}</maven.compiler.target>
         <maven.compiler.release>${target.java.version}</maven.compiler.release>
@@ -110,35 +120,35 @@
                 <version>7.0.5</version>
                 <executions>
                     <execution>
-                        <id>preprocessSources-java8</id>
+                        <id>preprocessSources-java${mrjar.oldestVersion}</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>preprocess</goal>
                         </goals>
                         <configuration>
                             <replaceSources>false</replaceSources>
-                            <target>${project.build.directory}/generated-sources/preprocessed-java8</target>
+                            <target>${project.build.directory}/generated-sources/preprocessed-java${mrjar.oldestVersion}</target>
                             <vars>
-                                <target.java.version>8</target.java.version>
+                                <target.java.version>${mrjar.oldestVersion}</target.java.version>
                             </vars>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>preprocessSources-java21</id>
+                        <id>preprocessSources-java${mrjar.newestVersion}</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>preprocess</goal>
                         </goals>
                         <configuration>
-                            <target>${project.build.directory}/generated-sources/preprocessed-java21</target>
+                            <target>${project.build.directory}/generated-sources/preprocessed-java${mrjar.newestVersion}</target>
                             <replaceSources>false</replaceSources>
                             <vars>
-                                <target.java.version>21</target.java.version>
+                                <target.java.version>${mrjar.newestVersion}</target.java.version>
                             </vars>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>preprocess-test-sources-java8</id>
+                        <id>preprocess-test-sources-java${mrjar.oldestVersion}</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>preprocess</goal>
@@ -149,24 +159,24 @@
                             <sources>
                                 <src>${project.build.testSourceDirectory}</src>
                             </sources>
-                            <targetTest>${project.build.directory}/generated-test-sources/preprocessed-java8</targetTest>
+                            <targetTest>${project.build.directory}/generated-test-sources/preprocessed-java${mrjar.oldestVersion}</targetTest>
                             <vars>
-                                <target.java.version>8</target.java.version>
+                                <target.java.version>${mrjar.oldestVersion}</target.java.version>
                             </vars>
                         </configuration>                    
                     </execution>
                     <execution>
-                        <id>preprocess-test-sources-java21</id>
+                        <id>preprocess-test-sources-java${mrjar.newestVersion}</id>
                         <phase>generate-test-sources</phase>
                         <goals>
                             <goal>preprocess</goal>
                         </goals>
                         <configuration>
-                            <targetTest>${project.build.directory}/generated-test-sources/preprocessed-java21</targetTest>
+                            <targetTest>${project.build.directory}/generated-test-sources/preprocessed-java${mrjar.newestVersion}</targetTest>
                             <replaceSources>false</replaceSources>
                             <useTestSources>true</useTestSources>
                             <vars>
-                                <target.java.version>21</target.java.version>
+                                <target.java.version>${mrjar.newestVersion}</target.java.version>
                             </vars>
                         </configuration>                    
                     </execution>
@@ -195,62 +205,64 @@
                         <phase></phase>
                     </execution>
                     <execution>
-                        <id>compile-java21</id>
+                        <id>compile-java${mrjar.newestVersion}</id>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                         <configuration>
                             <compileSourceRoots>
-                                <src>${project.build.directory}/generated-sources/preprocessed-java21</src>
+                                <src>${project.build.directory}/generated-sources/preprocessed-java${mrjar.newestVersion}</src>
                             </compileSourceRoots>
-                            <source>21</source>
-                            <target>21</target>
-                            <release>21</release>
+                            <source>${mrjar.newestVersion}</source>
+                            <target>${mrjar.newestVersion}</target>
+                            <release>${mrjar.newestVersion}</release>
                             <multiReleaseOutput>true</multiReleaseOutput>
+                            <enablePreview>${mrjar.newestVersionPreview}</enablePreview>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>compile-java8</id>
+                        <id>compile-java${mrjar.oldestVersion}</id>
                         <goals>
                             <goal>compile</goal>
                         </goals>
                         <configuration>
                             <compileSourceRoots>
-                                <src>${project.build.directory}/generated-sources/preprocessed-java8</src>
+                                <src>${project.build.directory}/generated-sources/preprocessed-java${mrjar.oldestVersion}</src>
                             </compileSourceRoots>
-                            <source>8</source>
-                            <target>8</target>
-                            <release>8</release>
+                            <source>${mrjar.oldestVersion}</source>
+                            <target>${mrjar.oldestVersion}</target>
+                            <release>${mrjar.oldestVersion}</release>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>testCompile-java21</id>
+                        <id>testCompile-java${mrjar.newestVersion}</id>
                         <goals>
                             <goal>testCompile</goal>
                         </goals>
                         <configuration>
                             <compileSourceRoots>
-                                <src>${project.build.directory}/generated-test-sources/preprocessed-java21</src>
+                                <src>${project.build.directory}/generated-test-sources/preprocessed-java${mrjar.newestVersion}</src>
                             </compileSourceRoots>
-                            <outputDirectory>${project.build.directory}/test-classes-java21</outputDirectory>
-                            <source>21</source>
-                            <target>21</target>
-                            <release>21</release>
+                            <outputDirectory>${project.build.directory}/test-classes-java${mrjar.newestVersion}</outputDirectory>
+                            <source>${mrjar.newestVersion}</source>
+                            <target>${mrjar.newestVersion}</target>
+                            <release>${mrjar.newestVersion}</release>
+                            <enablePreview>${mrjar.newestVersionPreview}</enablePreview>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>testCompile-java8</id>
+                        <id>testCompile-java${mrjar.oldestVersion}</id>
                         <goals>
                             <goal>testCompile</goal>
                         </goals>
                         <configuration>
                             <compileSourceRoots>
-                                <src>${project.build.directory}/generated-test-sources/preprocessed-java8</src>
+                                <src>${project.build.directory}/generated-test-sources/preprocessed-java${mrjar.oldestVersion}</src>
                             </compileSourceRoots>
-                            <outputDirectory>${project.build.directory}/test-classes-java8</outputDirectory>
-                            <source>8</source>
-                            <target>8</target>
-                            <release>8</release>
+                            <outputDirectory>${project.build.directory}/test-classes-java${mrjar.oldestVersion}</outputDirectory>
+                            <source>${mrjar.oldestVersion}</source>
+                            <target>${mrjar.oldestVersion}</target>
+                            <release>${mrjar.oldestVersion}</release>
                         </configuration>
                     </execution>
                 </executions>
@@ -285,29 +297,29 @@
                         <phase></phase>
                     </execution>
                     <execution>
-                        <id>test-java21</id>
+                        <id>test-java${mrjar.newestVersion}</id>
                         <phase>test</phase>
                         <goals>
                             <goal>test</goal>
                         </goals>
                         <configuration>
-                            <classesDirectory>${project.build.directory}/classes/META-INF/versions/21</classesDirectory>
-                            <testClassesDirectory>${project.build.directory}/test-classes-java21</testClassesDirectory>
-                            <!--<reportsDirectory>${project.build.directory}/surefire-reports-java21</reportsDirectory>-->
-                            <reportNameSuffix>java21</reportNameSuffix>
+                            <classesDirectory>${project.build.directory}/classes/META-INF/versions/${mrjar.newestVersion}</classesDirectory>
+                            <testClassesDirectory>${project.build.directory}/test-classes-java${mrjar.newestVersion}</testClassesDirectory>
+                            <!--<reportsDirectory>${project.build.directory}/surefire-reports-java${mrjar.newestVersion}</reportsDirectory>-->
+                            <reportNameSuffix>java${mrjar.newestVersion}</reportNameSuffix>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>test-java8</id>
+                        <id>test-java${mrjar.oldestVersion}</id>
                         <phase>test</phase>
                         <goals>
                             <goal>test</goal>
                         </goals>
                         <configuration>
                             <classesDirectory>${project.build.directory}/classes</classesDirectory>
-                            <testClassesDirectory>${project.build.directory}/test-classes-java8</testClassesDirectory>
-                            <!--<reportsDirectory>${project.build.directory}/surefire-reports-java8</reportsDirectory>-->
-                            <reportNameSuffix>java8</reportNameSuffix>
+                            <testClassesDirectory>${project.build.directory}/test-classes-java${mrjar.oldestVersion}</testClassesDirectory>
+                            <!--<reportsDirectory>${project.build.directory}/surefire-reports-java{mrjar.oldestVersion}</reportsDirectory>-->
+                            <reportNameSuffix>java${mrjar.oldestVersion}</reportNameSuffix>
                         </configuration>
                     </execution>
                 </executions>
