@@ -7,7 +7,9 @@
     <version>0.0.7-SNAPSHOT</version>
 
     <properties>
-        
+
+        <!-- // user-configurable properties \\ -->
+                
         <!-- version for non-MR, pre-9 part. usually you'll want to leave it at 8 -->
         <mrjar.oldestVersion>8</mrjar.oldestVersion>
         
@@ -15,14 +17,19 @@
         approved by your organization -->
         <mrjar.newestVersion>21</mrjar.newestVersion>
         
+        <!-- whether or not to enable preview features -->
         <mrjar.newestVersionPreview>true</mrjar.newestVersionPreview>
+
+        <exec.mainClass>demo4.App</exec.mainClass>
+        
+        <!-- \\ user-configurable properties // -->
+
         
         <target.java.version>${mrjar.newestVersion}</target.java.version>
         <maven.compiler.source>${target.java.version}</maven.compiler.source>
         <maven.compiler.target>${target.java.version}</maven.compiler.target>
         <maven.compiler.release>${target.java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <exec.mainClass>demo4.App</exec.mainClass>
     </properties>
     
     <dependencies>
@@ -69,6 +76,7 @@
         <pluginManagement>
             <plugins>
                 
+                <!-- formatter plugin, not directly related to making mrjar -->
                 <plugin>
                     <groupId>net.revelc.code.formatter</groupId>
                     <artifactId>formatter-maven-plugin</artifactId>
@@ -109,6 +117,7 @@
         
         <plugins>
             
+            <!-- formatter plugin, not directly related to making mrjar -->
             <plugin>
                 <groupId>net.revelc.code.formatter</groupId>
                 <artifactId>formatter-maven-plugin</artifactId>
@@ -285,7 +294,7 @@
                     <archive>                        
                         <manifestEntries>
                             <Multi-Release>true</Multi-Release>
-                            <Main-Class>demo4.App</Main-Class>
+                            <Main-Class>${exec.mainClass}</Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
